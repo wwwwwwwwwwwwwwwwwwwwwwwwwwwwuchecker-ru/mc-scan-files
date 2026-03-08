@@ -863,6 +863,7 @@ Write-Host $f.Message -ForegroundColor White
 if ($f.Details) { Write-Host " -- " -NoNewline -ForegroundColor Gray; Write-Host (CutStr $f.Details 55) -ForegroundColor DarkGray }
 $num++
 }
+}
 
 if ($script:Criticals.Count -gt 30) { Write-Host " ... and $($script:Criticals.Count - 30) more" -ForegroundColor DarkGray }
 Write-Host ""
