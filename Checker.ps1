@@ -127,7 +127,7 @@ Write-Host "                                          | |    | '_ \ / _ \/ __| |
 Write-Host "                                          | |____| | | |  __/ (__|   <  __/ |   " -ForegroundColor White
 Write-Host "                                           \_____|_| |_|\___|\___|_|\_\___|_|   " -ForegroundColor White
 Write-Host ""
-Write-Host "                                             (+) Developed by sacredmvp [2026]" -ForegroundColor Yellow
+Write-Host "                                           (+) Developed by sacredmvp [2026]" -ForegroundColor Yellow
 Write-Host ""
 }
 
