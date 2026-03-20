@@ -113,12 +113,12 @@ function Show-Banner {
 Clear-Host
 Write-Host ""
 Write-Host ""
-Write-Host "                                            ____                    _          " -ForegroundColor Magenta
-Write-Host "                                           / ___| _ __   ___   ___ | | ___   _ " -ForegroundColor Magenta
-Write-Host "                                           \___ \| '_ \ / _ \ / _ \| |/ / | | |" -ForegroundColor Magenta
-Write-Host "                                            ___) | |_) | (_) | (_) |   <| |_| |" -ForegroundColor Magenta
-Write-Host "                                           |____/| .__/ \___/ \___/|_|\_\\__, |" -ForegroundColor Magenta
-Write-Host "                                                 |_|                     |___/ " -ForegroundColor Magenta
+Write-Host "                                            ____                    _          " -ForegroundColor Orange
+Write-Host "                                           / ___| _ __   ___   ___ | | ___   _ " -ForegroundColor Orange
+Write-Host "                                           \___ \| '_ \ / _ \ / _ \| |/ / | | |" -ForegroundColor Orange
+Write-Host "                                            ___) | |_) | (_) | (_) |   <| |_| |" -ForegroundColor Orange
+Write-Host "                                           |____/| .__/ \___/ \___/|_|\_\\__, |" -ForegroundColor Orange
+Write-Host "                                                 |_|                     |___/ " -ForegroundColor Orange
 Write-Host ""
 Write-Host "                                            _____ _               _             " -ForegroundColor White
 Write-Host "                                           / ____| |             | |            " -ForegroundColor White
