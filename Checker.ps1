@@ -118,24 +118,24 @@ Write-Host (" " * $pad + ("=" * $Len)) -ForegroundColor $Color
 }
 
 function Show-Banner {
-Clear-Host
-Write-Host ""
-Write-Host ""
-Write-Host "             ____                           _          " -ForegroundColor White
-Write-Host "            / ___| _ __   ___   ___   ___  | | ___   _ " -ForegroundColor White
-Write-Host "            \___ \| '_ \ / _ \ / _ \ / _ \ | |/ / | | |" -ForegroundColor White
-Write-Host "             ___) | |_) | (_) | (_) | (_) ||   <| |_| |" -ForegroundColor White
-Write-Host "            |____/| .__/ \___/ \___/ \___/ |_|\_\\__, |" -ForegroundColor White
-Write-Host "                  |_|                             |___/ " -ForegroundColor White
-Write-Host ""
-Write-Host "                ____ _               _               " -ForegroundColor White
-Write-Host "               / ___| |__   ___  ___| | _____ _ __   " -ForegroundColor White
-Write-Host "              | |   | '_ \ / _ \/ __| |/ / _ \ '__|  " -ForegroundColor White
-Write-Host "              | |___| | | |  __/ (__|   <  __/ |     " -ForegroundColor White
-Write-Host "               \____|_| |_|\___|\___|_|\_\___|_|     " -ForegroundColor White
-Write-Host ""
-Write-Host ""
+    Clear-Host
+    $White = "White"
+    Write-Host ""
+    Write-Host "             ____                           _          " -ForegroundColor $White
+    Write-Host "            / ___| _ __   ___   ___   ___  | | ___   _ " -ForegroundColor $White
+    Write-Host "            \___ \| '_ \ / _ \ / _ \ / _ \ | |/ / | | |" -ForegroundColor $White
+    Write-Host "             ___) | |_) | (_) | (_) | (_) ||   <| |_| |" -ForegroundColor $White
+    Write-Host "            |____/| .__/ \___/ \___/ \___/ |_|\_\\__, |" -ForegroundColor $White
+    Write-Host "                  |_|                             |___/ " -ForegroundColor $White
+    Write-Host ""
+    Write-Host "                ____ _               _               " -ForegroundColor $White
+    Write-Host "               / ___| |__   ___  ___| | _____ _ __   " -ForegroundColor $White
+    Write-Host "              | |   | '_ \ / _ \/ __| |/ / _ \ '__|  " -ForegroundColor $White
+    Write-Host "              | |___| | | |  __/ (__|   <  __/ |     " -ForegroundColor $White
+    Write-Host "               \____|_| |_|\___|\___|_|\_\___|_|     " -ForegroundColor $White
+    Write-Host ""
 }
+
 
 
 function Show-Loading {
